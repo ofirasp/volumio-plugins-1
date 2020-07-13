@@ -611,8 +611,8 @@ Controller80s80s.prototype.getSongsResponse = function (songsArray) {
             album: currentSong.collection_name,
             streaming: true,
             //disableUiControls: true,
-            duration: songsArray[i].duration,
-            airtime: songsArray[i].airtime,
+            duration: parseFloat(songsArray[i].duration),
+            airtime: parseFloat(songsArray[i].airtime),
             seek: 0,
             samplerate: '44.1 KHz',
             bitdepth: '16 bit',
@@ -631,6 +631,7 @@ Controller80s80s.prototype.playNextTrack = function (songsArray) {
         .then(function () {
             //get now and calculate the difference
             self.getContentOfUrl(timeUrl).then(function (currentTime) {
+		currentTime= JSON.parse(currentTime);
                 var next = songsArray[0].airtime;
                 var now = currentTime.st;      
                 self.logger.info('[' + Date.now() + '] ' + '[80s80s] PlayNextTrack API delay: ' + self.apiDelay);
@@ -658,6 +659,7 @@ Controller80s80s.prototype.playNextTrack = function (songsArray) {
                 nextSongArray = nextSong;
                 self.getContentOfUrl(timeUrl).then(function (currentTime) {
                     // calculate time
+		    currentTime= JSON.parse(currentTime);
                     var next = nextSongArray[0].airtime;
                     var now = currentTime.st;
                     self.logger.info('[' + Date.now() + '] ' + '[80s80s] PlayNextTrack API delay: ' + self.apiDelay);
